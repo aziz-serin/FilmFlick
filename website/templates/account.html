@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<style>
+  @font-face {
+    font-family: 'ProximaNovaBold';
+    src: url(../static/Proxima_Nova_Bold.otf);
+    font-style: normal;
+    font-weight: 100;
+  }
+  *{
+    font-family: ProximaNovaBold;
+  }
+  html {
+    height: 100%;
+  }
+  body{
+    background-image: url("../static/background2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: #F8F9FA;background-size: 100% 100%;
+    min-height: 100%;
+  }
+  .hide {
+      display: none;
+  }
+  .menu {
+    margin-top: 50px;
+    list-style: none;
+
+  }
+  #pages {
+    min-height: 100%;
+    color: #323232;
+
+  }
+  .container{
+    margin-top: 50px;
+    height: 100%;
+
+  }
+  .page {
+    padding-left: 10px; padding-right: 10px;
+    border-radius: 20px;
+  }
+  #myReviews {
+    animation: fadein 1.5s;
+  }
+  #myReviews a,p{
+    color: black;
+  }
+  #myReviews a:hover{
+    color: #6ABCEA;
+  }
+
+  .menu li{
+    display: inline-block;
+    padding-left: 10px;
+  }
+
+  .row {
+    background: rgb(255,255,255,0.9);
+  }
+
+  #footer {
+    right: 0px; bottom: 0px; left: 0px;
+    width: 100%;
+  }
+  section{
+    padding-bottom: 218px;
+
+  }
+  label{
+    display: block;
+  }
+  #myReviews, #myWhitelist, #myBlacklist{
+    max-width: 100%;
+    overflow-x: hidden;
+
+  }
+  .linebreak{
+    border-top: 8px solid white;
+    border-radius: 5px;
+  }
+
+/* css for white/blacklist cards */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover {
+    color: #6ABCEA;
+  }
+
+  .movie-card {
+    background: #ffffff;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 27%;
+    margin: 2em;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .movie-header {
+    padding: 0;
+    margin: 0;
+    height: 367px;
+    width: 100%;
+    display: block;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .header-icon-container {
+    position: relative;
+  }
+
+  .movie-card:hover {
+    -webkit-transform: scale(1.03);
+            transform: scale(1.03);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .movie-content {
+    padding: 18px 18px 24px 18px;
+    margin: 0;
+  }
+
+  .movie-content-header {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .movie-title {
+    font-size: 24px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .fa-times {
+    color: red;
+  }
+  .row p{
+    color: black;
+  }
+
+  .deleteButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    margin-right: 5px;
+  }
+  .page::-webkit-scrollbar {
+    width: 5px;
+  }
+  .page::-webkit-scrollbar-track {
+    background: none;
+  }
+  .page::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 20px;
+    border: none;
+  }
+  .submit-btn{
+    font-family: 'ProximaNovaBold';
+    src: url(../static/Proxima_Nova_Bold.otf);
+    font-style: normal;
+    font-weight: 100;
+    border-radius: 10px;
+    padding: 10px;
+    border-width: 5px;
+    border-color: black;
+    color: black;
+    background: white;
+    border-style: solid;
+  }
+  .submit-btn:hover{
+    background: grey;
+    color: orange;
+    border-color: black;
+  }
+  @keyframes fadein {
+    from { opacity: 0}
+    to   { opacity: 1}
+  }
+  footer a,p{
+    color: white;
+  }
+
+
+</style>
+<section>
+
+  <!-- Main profile menu -->
+<div class="container">
+  <ul class="menu" id="menu" >
+    <li><a data-page="myReviews" href="#" style="color: white;"><h3>  My Reviews  </h3> </a></li>
+    <li><a data-page="myWhitelist" href="#" style="color: white;"><h3>  Liked  </h3> </a></li>
+    <li><a data-page="myBlacklist" href="#" style="color: white;"><h3>  Disliked  </h3> </a></li>
+    <li><a data-page="mySettings" href="#" style="color: white;"><h3>  Settings  </h3> </a></li>
+</ul>
+
+<!-- Each menu link, with filler text  -->
+<div id="pages">
+    <div id="myReviews" style="overflow-y:auto; height:700px;" class="page" data-page="myReviews">
+        <div class="row">
+            <div class="col-12 pt-3">
+                <h1> My Reviews </h1>
+                <hr class="linebreak">
+                {% if reviews %}
+                {% for review in reviews%}
+                <div>
+        					<div class="row">
+        						<div class="col-md-4">
+                      <h4><a href="/detailedReview/ID={{review.movie_id}}" style="text-decoration: underline;">{{review.rating}}</a></h4>
+                      <h5>{{review.title}}</h5>
+        						</div>
+        						<div class="col-md-8">
+        							<small>{{review.date.date()}}</small>
+        						</div>
+        					</div>
+                  <br>
+        					<p>{{review.data}}</p>
+                  <br>
+                  <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                  <a class="btn btn-secondary btn-sm m-1" href="{{url_for('usersReviews.writeReview', review_id=review.id)}}">Update</a>
+
+                  <!-- Delete Review -->
+                  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                	  <div class="modal-dialog" role="document">
+                	    <div class="modal-content">
+                	      <div class="modal-header">
+                	        <h5 class="modal-title" id="deleteModalLabel">Confirm</h5>
+                	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                	          <span aria-hidden="true">&times;</span>
+                	        </button>
+                	      </div>
+                	      <div class="modal-body">
+                	        Are you sure you want to delete this review?
+                	      </div>
+                	      <div class="modal-footer">
+                	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                	        <form action="{{ url_for('usersReviews.delete_review', review_id=review.id)}}" method="POST">
+                	        	<input class="btn btn-danger" type="submit" value="Delete">
+                	        </form>
+                	      </div>
+                	    </div>
+                	  </div>
+                	</div>
+        				</div>
+        			{% endfor %}
+                <hr class="linebreak">
+                {% else %}
+                <h3>There are no reviews</h3>
+                <br>
+                <h5>When you write a review, it will appear here! &#9889;</h5>
+                <br>
+              {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <div id="myWhitelist" style="overflow-y:auto; height:700px;" class="page hide" data-page="myWhitelist">
+        <div class="row">
+            <div class="col-12 pt-3">
+              <h1> Liked Films </h1>
+              <hr class="linebreak">
+              {% if whitelist %}
+                {% for movie in whitelist %}
+                  <div class="movie-card" id="W{{ movie.id }}">
+                    <div class="movie-header" style="background: url({{ movie.poster }})">
+                      <div class="header-icon-container">      
+                        <button type="button" data-toggle="modal" data-target="#deleteMovieW{{ movie.id }}" class="deleteButton">
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div><!--movie-header-->
+                    <div class="movie-content">
+                      <div class="movie-content-header">
+                        <a href="/detailedReview/ID={{ movie.movie_id }}">
+                          <h3 class="movie-title">{{ movie.title }}</h3>
+                        </a>
+                      </div>
+                    </div><!--movie-content-->
+                  </div><!--movie-card-->
+
+                  <!-- Delete Movie -->
+                  <div class="modal fade" id="deleteMovieW{{ movie.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalW{{ movie.id }}Title" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalW{{ movie.id }}Title">Confirm</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to remove {{ movie.title }} from your liked list?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <form method="post" action="{{ url_for('usersReviews.removeMovie') }}">
+                            <input type="hidden" name="currentMovieID" id="currentMovieID" value="{{ movie.movie_id }}">
+                            <input type="hidden" name="buttonpressed" id="buttonpressed" value="whitelist">
+                            <input class="btn btn-danger" type="submit" value="Remove">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <h3>There are no movies in your Liked list &#127775;</h3>
+              {% endif %}
+              <hr class="linebreak">
+            </div>
+        </div>
+    </div>
+    <div id="myBlacklist" style="overflow-y:auto; height:700px;" class="page hide" data-page="myBlacklist">
+        <div class="row">
+            <div class="col-12 pt-3">
+              <h1> Disliked Films </h1>
+              <hr class="linebreak">
+              {% if blacklist %}
+                {% for movie in blacklist %}
+                  <div class="movie-card" id="B{{ movie.id }}">
+                    <div class="movie-header" style="background: url({{ movie.poster }})">
+                      <div class="header-icon-container">
+                        <button type="button" data-toggle="modal" data-target="#deleteMovieB{{ movie.id }}" class="deleteButton">
+                          <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div><!--movie-header-->
+                    <div class="movie-content">
+                      <div class="movie-content-header">
+                        <a href="/detailedReview/ID={{ movie.movie_id }}">
+                          <h3 class="movie-title">{{ movie.title }}</h3>
+                        </a>
+                      </div>
+                    </div><!--movie-content-->
+                  </div><!--movie-card-->
+
+                  <!-- Delete Movie -->
+                  <div class="modal fade" id="deleteMovieB{{ movie.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalB{{ movie.id }}Title" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModalB{{ movie.id }}Title">Confirm</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to remove {{ movie.title }} from your disliked list?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <form method="post" action="{{ url_for('usersReviews.removeMovie') }}">
+                            <input type="hidden" name="currentMovieID" id="currentMovieID" value="{{ movie.movie_id }}">
+                            <input type="hidden" name="buttonpressed" id="buttonpressed" value="blacklist">
+                            <input class="btn btn-danger" type="submit" value="Remove">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <h3>There are no movies in your Disliked List &#128164;</h3>
+              {% endif %}
+              <hr class="linebreak">
+            </div>
+        </div>
+    </div>
+
+    <div id="mySettings"  class="page hide" data-page="mySettings">
+        <div class="row"  style="border-radius: 20px;">
+            <div class="col-12 pt-3">
+                <h1 style="padding: 0 15px 0 15px"> Settings </h1>
+                <p style="padding: 10px 15px 0 15px; font-weight: bold;"> Username: {{current_user.username}}</p>
+                <p style="padding: 0 15px 0 15px; font-weight: bold;"> Display name: {{current_user.display_name}}</p>
+                <hr class="linebreak">
+
+
+              <!-- Change Password-->
+                <div id="changeP" data-page="changeP">
+                    <div class="row-4">
+                        <div class="col-12 pt-10">
+                          <h4 style="padding: 20px 0 10px 0;"> Change Password </h4>
+                            <form class="form-signin" method="POST" action="">
+                              {{ form2.hidden_tag() }}
+
+                                        <!-- password input field -->
+                                <div class="form-row">
+                                  <div class="col-lg-8">
+                                    <fieldset class="form-group">
+                                    <div class="input-field">
+                                        {{ form2.new_password.label}}
+                                        {% if form2.new_password.errors %}
+                                            {{ form2.new_password }}
+                                            <div class="invalid-feedback">
+                                              {% for error in form2.new_password.errors %}
+                                                  <span> {{ error }} </span>
+                                              {% endfor %}
+                                            </div>
+                                        {% else %}
+                                        {{ form2.new_password}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                              </div>
+                              <!--confirm password field -->
+                              <div class="form-row">
+                                <div class="col-lg-8">
+                                  <fieldset class="form-group">
+                                  <div class="input-field">
+                                      {{ form2.confirm_new_password.label}}
+                                      {% if form2.confirm_new_password.errors %}
+                                          {{ form2.confirm_new_password }}
+                                          <div class="invalid-feedback">
+                                            {% for error in form2.confirm_new_password.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                          </div>
+                                      {% else %}
+                                      {{ form2.confirm_new_password}}
+                                      {% endif %}
+                                  </div>
+                              </div>
+                            </div>
+                              <div class="form-row">
+                                <div class="col-lg-8">
+                                  <div >
+                                    {{ form2.submit_change_p (class="submit-btn mt-3 mb-5")}}
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <hr class="linebreak">
+                <!-- Change display name-->
+                <div id="changeN" data-page="changeN">
+                    <div class="row-4">
+                        <div class="col-12 pt-10">
+                          <h4 style="padding: 20px 0 10px 0; float: top;"> Change Display Name </h4>
+                            <form class="form-signin" method="POST" action="">
+                              {{ form3.hidden_tag() }}
+
+                                <div class="form-row">
+                                  <div class="col-lg-8">
+                                    <fieldset class="form-group">
+                                    <div class="input-field">
+                                        {{ form3.new_display_name.label}}
+                                        {% if form3.new_display_name.errors %}
+                                            {{ form3.new_display_name }}
+                                            <div class="invalid-feedback">
+                                              {% for error in form3.new_display_name.errors %}
+                                                  <span> {{ error }} </span>
+                                              {% endfor %}
+                                            </div>
+                                        {% else %}
+                                        {{ form3.new_display_name}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="col-lg-8">
+                                  <div >
+                                    {{ form3.submit_change_n (class="submit-btn mt-3 mb-5")}}
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <hr class="linebreak">
+                <!-- Change Security Questions Answers -->
+                <div style="float:top;"id="changeQ" data-page="changeQ">
+                    <div class="row-4">
+                        <div class="col-12 pt-5">
+                          <h4> Change Security Questions </h4>
+                          <form class="form-signin" method="POST" action="">
+                            {{ form1.hidden_tag() }}
+                          <div class="form-row">
+                            <div class="col-lg-8">
+                              <fieldset class="form-group">
+                              <div class="input-field">
+                                  {{ form1.question_1.label}}
+                                  {% if form1.question_1.errors %}
+                                      {{ form1.question_1 }}
+                                      <div class="invalid-feedback">
+                                        {% for error in form1.question_1.errors %}
+                                            <span> {{ error}} </span>
+                                        {% endfor %}
+                                      </div>
+                                      {% else %}
+                                        {{ form1.question_1}}
+                                        {% endif %}
+                                      </div>
+                              </div>
+                          </div>
+                              <div class="form-row">
+                                <div class="col-lg-8">
+                                  <fieldset class="form-group">
+                                  <div class="input-field">
+                                      {{ form1.question_2.label}}
+                                      {% if form1.question_2.errors %}
+                                          {{ form1.question_2 }}
+                                          <div class="invalid-feedback">
+                                            {% for error in form1.question_2.errors %}
+                                                <span> {{ error }} </span>
+                                            {% endfor %}
+                                          </div>
+                                      {% else %}
+                                      {{ form1.question_2}}
+                                      {% endif %}
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="col-lg-8">
+                                <fieldset class="form-group">
+                                <div class="input-field">
+                                    {{ form1.question_3.label}}
+                                    {% if form1.question_3.errors %}
+                                        {{ form1.question_3 }}
+                                        <div class="invalid-feedback">
+                                          {% for error in form1.question_3.errors %}
+                                              <span> {{ error }} </span>
+                                          {% endfor %}
+                                        </div>
+                                    {% else %}
+                                    {{ form1.question_3}}
+                                    {% endif %}
+                                </div>
+                            </div>
+                          </div>
+                            <div class="form-row">
+                              <div class="col-lg-8">
+                                <div >
+                                  {{ form1.submit_change_q (class="submit-btn mt-3 mb-5")}}
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+
+                        </div>
+                    </div>
+                </div>
+    </div>
+    </div>
+</div>
+
+</section>
+
+<!-- Hiding/showiing content on the same div function -->
+<script>
+jQuery.noConflict(); //prevents jquery from interfering with other scripts
+$(document).ready(function() {
+    $("#menu li a").on('click', function(e) {
+        e.preventDefault()
+        var page = $(this).data('page');
+        $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
+            $(this).addClass('hide');
+            $('#pages .page[data-page="'+page+'"]').fadeIn('slow').removeClass('hide'); //fading animation of the content in div
+        });
+    });
+});
+</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+{% endblock content %}

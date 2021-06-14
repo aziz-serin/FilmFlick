@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<!-- Link to the animated background -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+	<!-- CSS styling, to be moved to static style file -->
+	<style>
+	html {
+    	height: 100%;
+  	}
+	body{
+	    min-height: 100%;
+	    background-image: url("../static/background2.png");
+	    background-color: #F8F9FA;background-size: 100% 100%;
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	    background-attachment: fixed;
+	}
+	#mainBody {
+		margin-top: 20px;
+		margin-bottom: 40px;
+		background-position: center;
+		width: 90%;
+		height: 80%;
+		animation: fadein 1.5s;
+	}
+	#poster{
+		display: block;
+		margin-left: 0;
+		margin-top: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 17px;
+	}
+	#movieDetails, #reviewsSection {
+		background: #DCDCDC;
+		box-shadow: 5px 5px 22px grey;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+	}
+	#runtime {
+		float: left;
+	}
+	#rating {
+		float: right;
+	}
+	#footer{
+    right: 0; bottom: 0; left: 0;
+    width: 100%;
+    height: 218px;
+  }
+	.btn{
+		padding: 10px;
+		color: white;
+		background: rgb(46,48,46);
+		margin-top: 5px;
+		border: 10px;
+		width: 200px;
+		font-family: 'ProximaNovaBold';
+		src: url(../static/Proxima_Nova_Bold.otf);
+		font-style: normal;
+		font-weight: 100;
+	}
+	span {
+		font-size: 1.3em;
+	}
+	@keyframes fadein {
+	  from { opacity: 0}
+	  to   { opacity: 1}
+	}
+	h4{
+		text-decoration: underline;
+		color: #323232;
+	}
+	h3{
+		margin-bottom: -10px;
+		color: white;
+		line-height: 1.5;
+		font-size: 40px;
+	}
+	.ltitle{
+		color: #F75692;
+	}
+	.reviews{
+		font-size: 40px;
+	}
+	#title {
+		margin-bottom: 5px;
+	}
+	#whitelistbtn, #blacklistbtn{
+		background: rgb(46,48,46);
+		border-color: white;
+		border-style: solid;
+		border-width: 2px;
+		color: white;
+		font-family: 'ProximaNovaBold';
+		src: url(../static/Proxima_Nova_Bold.otf);
+		font-style: normal;
+		font-weight: 100;
+		width: 70px;
+	}
+	#writereviewbtn {
+		background: #DCDCDC;
+		border-color: #DCDCDC;
+		border-style: solid;
+		border-width: 2px;
+		color: black;
+		font-family: 'ProximaNovaBold';
+		src: url(../static/Proxima_Nova_Bold.otf);
+		font-style: normal;
+		font-weight: 100;
+		width: 98%;
+	}
+	a:hover {
+	    color: #6ABCEA;
+	}
+	footer {
+		padding-top: 10%;
+	}
+</style>
+
+	<!-- FILM INFORMATION SECTION-->
+	<div id="mainBody" class="container-fluid p-3">
+		{% if not error_message %}
+			<h3 id="title">{{movie_title}} ({{year_of_movie}})</h3>
+		{% else %}
+			<h2 class="m-2">{{error_message}}</h2>
+		{% endif %}
+		<div class="row">
+			{% if not error_message %}
+			<div class="col-md-3">
+				<span><img src={{poster}} width="350" id="poster"></span>
+			</div>
+			<div class="col-md-9" id="movieDetails">
+				<br>
+				<h4>MOVIE INFORMATION</h4>
+				<div style="clear: both;">
+					<span id ="rating">Rating: {{imdb_rating}}</span>
+					<span id="runtime">Duration: {{runtime}}</span>
+				</div>
+				<br> <br>
+				<span>Language: {{language}}</span>
+				<br>
+				<span>Genres: {{genres}}</span>
+				<br>
+				<span>Awards: {{awards}}</span>
+				<br>
+				<br>
+				<h4>PLOT</h4>
+				<span>{{plot}}</span>
+				<br><br><br>
+				<div class="row">
+					<div class="col-md-3">
+						<span class='ltitle'>DIRECTORS</span>
+						<br>
+						<span>{{directors}}</span>
+					</div>
+					<div class="col-md-3">
+						<span class='ltitle'>WRITERS</span>
+						<br>
+						<span>{{writer}}</span>
+					</div>
+					<div class="col-md-3">
+						<span class='ltitle'>ACTORS</span>
+						<br>
+						<span>{{actors}}</span>
+					</div>
+					<div class="col-md-3">
+						<span class='ltitle'>PRODUCTION</span>
+						<br>
+						<span>{{production}}</span>
+					</div>
+				</div>
+				<br>
+			</div>
+			<br>
+			{% else %}
+				<h2 class="m-2">{{error_message}}</h2>
+			{% endif %}
+		</div>
+		<br>
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-6">
+						<form method="post" action="{{ url_for('movies.save_movie') }}" id="saveMovieForm">
+			      	<input type="hidden" name="currentMovieID" id="currentMovieID" value="{{ movie_id }}">
+			      	<input type="hidden" name="currentMovieTitle" id="currentMovieTitle" value="{{ movie_title }}">
+			      	<input type="hidden" name="currentMoviePoster" id="currentMoviePoster" value="{{ poster }}">
+								<button style="color: {{ whitebtn }}" form="saveMovieForm" type="submit" name="whitelistbtn" class="btn btn-primary" id="whitelistbtn">
+				        	<i class="fa fa-heart" aria-hidden="true"></i>
+				      	</button>
+								<button style="color: {{ blackbtn }}" form="saveMovieForm" type="submit" name="blacklistbtn" class="btn btn-primary" id="blacklistbtn">
+				        	<i class="fa fa-times" aria-hidden="true"></i>
+				      	</button>
+			  		</form>
+					</div>
+					<div class="col-md-6 no-gutters">
+						<button type="submit" name="writereviewbtn" class="btn btn-primary" data-toggle="modal" data-target='#write_reviews' id="writereviewbtn">Write Review</button>
+					</div>
+				</div>
+			</div>
+			<!-- write reviews pop up window -->
+			<form class="form-group form-group-lg" method="POST" action="">
+				{{ form.hidden_tag() }}
+				<div id="write_reviews" class="modal fade">
+					<div class="modal-dialog modal-lg" role="dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title w-100 text-center">{{movie_title}} ({{year_of_movie}})</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<div class="container">
+									 <div class="form-group">
+										 <fieldset class="form-group">
+											 <div class="row">
+											 	{{ form.title.label}}
+											 </div>
+											 <div class="row">
+												 {% if form.title.errors %}
+													 {{ form.title }}
+													 <div class="invalid-feedback">
+														 {% for error in form.title.errors %}
+														 		<span> {{ error}} </span>
+														 {% endfor %}
+													 </div>
+												 {% else %}
+													 {{ form.title}}
+													 {% endif %}
+											</div>
+										 </fieldset>
+									 </div>
+							 	</div>
+								<div class="container">
+									<div class="form-group">
+										<fieldset class="form-group" id="exampleFormControlTextarea1" rows="3">
+											<div class="row">
+												{{ form.content.label}}
+											</div>
+											<div class="row">
+												{% if form.content.errors %}
+													{{ form.content }}
+													<div class="invalid-feedback">
+														{% for error in form.content.errors %}
+																<span> {{ error}} </span>
+														{% endfor %}
+													</div>
+												{% else %}
+													{{ form.content}}
+													{% endif %}
+											</div>
+										</fieldset>
+									</div>
+								</div>
+								<div class="container">
+									<div class="row">
+										<div class="col-md-3">
+											<div class="form-group">
+													{{ form.submit_review(class="btn")}}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+			</form>
+
+			<!-- REVIEWS SECTION -->
+			<div class="col-md-9 no-gutters">
+				
+				<div class="container-fluid padding" id="reviewsSection">
+					<br>
+					<h4 class='reviews'>REVIEWS</h4>
+					<!-- loop criteria to be replaced with for review in review
+					where the reviews are returned from the DB -->
+					{% if reviews %}
+					{% for review in reviews%}
+						<div>
+							<div class="row">
+								<div class="col-md-4">
+									<h4>{{review.title}}</h4>
+									<span>{{review.user_id}}</span>
+								</div>
+								<div class="col-md-8">
+									<small>{{review.date.date()}}</small>
+								</div>
+							</div>
+							<span>{{review.data}}</span>
+						</div>
+					{% endfor %}
+				</div>
+				{% else %}
+				<br>
+				<h2>There are no reviews &#128164;</h2>
+				<br>
+				{% endif %}
+			</div>
+		</div>
+		</div>
+	</div>
+	<br>
+
+	<!-- Script to deal with data without refreshing page -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+		//Checks if whitelist or blacklist was clicked
+		var buttonpressed;
+		var whitebtn = document.getElementById("whitelistbtn");
+		var blackbtn = document.getElementById("blacklistbtn");
+		$('.btn-primary').click(function() {
+		    buttonpressed = $(this).attr('name')
+		});
+
+	   $("#saveMovieForm").submit(function(e) {
+	       e.preventDefault();
+	       var form = $(this);
+	       var url = form.attr('action');
+	       var info = form.serialize() + '&buttonpressed=' + buttonpressed;
+
+	       $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: info,
+	           context: form,
+	           success: function(resp) {
+	           		if (resp == "SavedW"){
+	           			whitebtn.style.color = "red"
+	           		} else if (resp == "SavedB"){
+	           			blackbtn.style.color = "black"
+	           		}else if (resp == "RemovedW"){
+	           			whitebtn.style.color = "white"
+	           		}else if (resp == "RemovedB"){
+	           			blackbtn.style.color = "white"
+	           		}else if (resp == "BtoW"){
+	           			whitebtn.style.color = "red"
+	           			blackbtn.style.color = "white"
+	           		}else if (resp == "WtoB"){
+	           			whitebtn.style.color = "white"
+	           			blackbtn.style.color = "black"
+	           		}else if (resp == "/login"){
+						$(location).attr('href', resp)
+	           		}else{
+	           			alert("Something went wrong")
+	           		}
+	           }
+	       });
+	   });
+	</script>
+
+{% endblock content %}

@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+
+     <style>
+      *{
+        box-sizing: border-box;
+
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body{
+        background: #FF8870;
+        min-height: 100%;
+        background-image: url("../static/background2.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed
+
+      }
+      .container{
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        height: 150vh;
+        animation: fadein 1.5s;
+
+      }
+      a:hover {
+        color: #6ABCEA;
+      }
+
+      #register {
+        flex: 1 0 auto;
+      }
+
+      .row{
+        background: white;
+        border-radius: 30px;
+      }
+      img{
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      .submit-btn{
+        border: none;
+        outline: none;
+        height: 50px;
+        width: 100%;
+        background-color: black;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .submit-btn:hover{
+        background:white;
+        border:1px solid;
+        color: black;
+      }
+
+      .check-box{
+
+      }
+      label{
+        width: 240px;
+        display: inline-block;
+      }
+      #footer {
+        height: 218px;
+        flex-shrink: 0;
+      }
+      .btn-primary{
+        background-color: white;
+        color: black;
+        padding: 5px;
+        border-color: black;
+        margin-top: 30px;
+        margin-bottom: 100px
+      }
+      .btn-primary:hover{
+        background-color: grey;
+        border:1px solid;
+        color: white;
+      }
+      .btn-primary.active, .btn-primary:active, .show>.btn-primary.dropdown-toggle {
+        background-color: grey;
+        border:1px solid;
+        color: white;
+      }
+      #leftimagediv {
+        background-color: #EB197F;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      h1 {
+        color: transparent;
+      }
+      @media (max-width: 1000px){
+        #leftimagediv {
+          display: none;
+        }
+        .img-fluid {
+          display: none;
+        }
+        #footer {
+          height: 345px;
+          /*display: none;*/
+        }
+        #register {
+          padding: 0;
+        }
+        #fgtpassword {
+          padding-bottom: 15px;
+        }
+        h1 {
+          color: #FF8870;
+        }
+        #content {
+          margin-bottom: 200px;
+        }
+        .container {
+          height: 130vh;
+        }
+
+      }
+      .form-group[data-error] .input-field{
+        border-color: #c92432;
+        color: #c92432;
+        background: #fffafa;
+      }
+      #securitybtn[data-error] .input-field{
+        color: black;
+      }
+      /*.form-group[data-error]::after {
+        content: attr(data-error);
+      }*/
+      ::placeholder{
+        font-family: 'ProximaNovaBold';
+        src: url(../static/Proxima_Nova_Bold.otf);
+        font-style: normal;
+        font-weight: 100;
+        font-size: 0.8em;
+      }
+      #securitybtn{
+        font-family: 'ProximaNovaBold';
+        src: url(../static/Proxima_Nova_Bold.otf);
+        font-style: normal;
+        font-weight: 100;
+      }
+      @keyframes fadein {
+        from { opacity: 0}
+        to   { opacity: 1}
+      }
+
+
+
+    </style>
+    <!-- image and register forms -->
+    <section class="Form mx-5 my-4">
+      <div class="container" id="register">
+        <div class="row no-gutters" id="content">
+          <div class="col-lg-5" id="leftimagediv">
+            <img src="{{url_for('static', filename='poster.png')}}" class="img-fluid" alt="filmflickposter">
+          </div>
+          <div class="col-lg-7 px-5 pt-5">
+            <h1 class="font-weight-bold py-3">FilmFlick</h1>
+            <h2>Sign up for a new account</h2>
+            <br>
+            <form class="form-signin" method="POST" action="">
+              {{ form.hidden_tag() }}
+              <!-- username input field -->
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <fieldset class="form-group" data-error="error">
+                  {{ form.username.label }}
+                  {% if form.username.errors %}
+                      {{ form.username(class="input-field")}}
+                      <div class="invalid-feedback">
+                       {% for error in form.username.errors %}
+                        <span>{{ error }} </span>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      {{ form.username }}
+                    {% endif %}
+                </div>
+              </div>
+              <!-- displayname input field -->
+              <div class="form-row" >
+                <div class="col-lg-7">
+                  <fieldset class="form-group" data-error="error">
+                  {{ form.display_name.label }}
+                  {% if form.display_name.errors %}
+                      {{ form.display_name(class="input-field")}}
+                      <div class="invalid-feedback">
+                       {% for error in form.display_name.errors %}
+                        <span>{{ error }} </span>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      {{ form.display_name }}
+                    {% endif %}
+
+                </div>
+              </div>
+              <!-- password input field -->
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <fieldset class="form-group" data-error="error">
+                  <div>
+                      {{ form.password.label}}
+                      {% if form.password.errors %}
+                          {{ form.password(class="input-field") }}
+                          <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span> {{ error}} </span>
+                            {% endfor %}
+                          </div>
+                          {% else %}
+                            {{ form.password}}
+                            {% endif %}
+                          </div>
+                          <!-- confirm password input field -->
+                          <div class="form-row">
+                            <div class="col">
+                              <fieldset class="form-group" data-error="error">
+                              <div style="padding-top: 15px;">
+                                  {{ form.confirm_password.label}}
+                                  {% if form.confirm_password.errors %}
+                                      {{ form.confirm_password(class="input-field") }}
+                                      <div class="invalid-feedback">
+                                        {% for error in form.confirm_password.errors %}
+                                            <span> {{ error }} </span>
+                                        {% endfor %}
+                                      </div>
+                                      {% else %}
+                                        {{ form.confirm_password}}
+                                        {% endif %}
+                                      </div>
+                          <!-- buttons for security questions -->
+                          <div class="form-row" style="height: 80px; margin-left: 2px;">
+
+                                <button id="securitybtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#security_questions">
+                                  Security Questions
+                                </button>
+                              </div>
+                            </div>
+                        <!-- pop-up window for security questions -->
+                        <div id="security_questions" class="modal fade">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h4 class="modal-title text-xs-center">Security Questions</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="form-group">
+                                      <div class="col-lg-7 px-2 pt-2">
+                                        <fieldset class="form-group">
+                                            {{ form.question_1.label}}
+                                            {% if form.question_1.errors %}
+                                                {{ form.question_1(class=input-field) }}
+                                                <div class="invalid-feedback">
+                                                  {% for error in form.question_1.errors %}
+                                                      <span> {{ error}} </span>
+                                                  {% endfor %}
+                                                </div>
+                                                {% else %}
+                                                  {{ form.question_1}}
+                                                  {% endif %}
+                                                </div>
+                            <div class="form-group">
+						                <div class="col-lg-7 px-2 pt-2">
+						                  <fieldset class="form-group">
+						                  <div>
+						                      {{ form.question_2.label}}
+						                      {% if form.question_2.errors %}
+						                          {{ form.question_2(class="input-field") }}
+						                          <div class="invalid-feedback">
+						                            {% for error in form.question_2.errors %}
+						                                <span> {{ error}} </span>
+						                            {% endfor %}
+						                          </div>
+						                          {% else %}
+						                            {{ form.question_2}}
+						                            {% endif %}
+						                          </div>
+						            <div class="form-group">
+						                <div class="col-lg-7 px-2 pt-2">
+						                  <fieldset class="form-group" style="margin-left: -8px; margin-top: 10px;">
+						                  <div>
+						                      {{ form.question_3.label}}
+						                      {% if form.question_3.errors %}
+						                          {{ form.question_3(class="input-field") }}
+						                          <div class="invalid-feedback">
+						                            {% for error in form.question_3.errors %}
+						                                <span> {{ error}} </span>
+						                            {% endfor %}
+						                          </div>
+						                          {% else %}
+						                            {{ form.question_3}}
+						                            {% endif %}
+						                          </div>
+						            <button type="button" class="submit-btn mt-2 mb-3" data-dismiss="modal">Close</button>
+                                  </div>
+                                  </div>
+                              </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+              <!-- I agree to terms and conditions check box -->
+	              </fieldset>
+	              <div class="check-box">
+	                  {{ form.agree }}
+	                  {{ form.agree.label}}
+	              </div>
+                </div>
+              </div>
+              <!-- register button -->
+              <div class="form-row">
+                <div class="col-lg-7">
+                  <div >
+                    {{ form.submit_register (class="submit-btn mt-3 mb-5")}}
+                  </div>
+                </div>
+              </div>
+              <p style="color: black;">Have an account? <a href="{{ url_for('usersReviews.login')}}">Log in here</a></p>
+            </form>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.querySelectorAll('.form-group[data-error] .input-field').forEach(inpEl => {
+        inpEl.addEventListener('input-field', () => inpEl.parentElement.removeAttribute('data-error'));
+      });
+    </script>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+{% endblock content %}

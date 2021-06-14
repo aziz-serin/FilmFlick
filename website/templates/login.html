@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+<!-- below is just some styling i added to help me visualise the page, they can be removed/put into a stylesheet -->
+
+    <style>
+      *{
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+      body{
+        background: #FF8870;
+        min-height: 100%;
+        background-image: url("../static/background2.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed
+      }
+      .container{
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        height: 150vh;
+        animation: fadein 1.5s;
+
+      }
+      a:hover {
+        color: #6ABCEA;
+      }
+
+      #login {
+        flex: 1 0 auto;
+      }
+
+      .row{
+        background: white;
+        border-radius: 30px;
+      }
+      img{
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      .submit-btn{
+        border: none;
+        outline: none;
+        height: 50px;
+        width: 100%;
+        background-color: black;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .submit-btn:hover{
+        background:white;
+        border:1px solid;
+        color: black;
+      }
+      .check-box{
+        margin-left: 20px;
+      }
+      label{
+        width: 240px;
+        display: inline-block;
+      }
+      #remember {
+        margin-left: -18px;
+        margin-top: 20px;
+
+      }
+      #footer {
+        height: 218px;
+        flex-shrink: 0;
+
+      }
+      #leftimagediv {
+        background-color: #EB197F;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+      }
+      h1 {
+        color: transparent;
+      }
+      @media (max-width: 1000px){
+        #leftimagediv {
+          display: none;
+        }
+        .img-fluid {
+          display: none;
+        }
+        #footer {
+          height: 345px;
+        }
+        #login {
+          padding: 0;
+        }
+        #fgtpassword {
+          padding-bottom: 15px;
+        }
+        h1 {
+          color: #FF8870;
+        }
+
+      }
+      @keyframes fadein {
+        from { opacity: 0}
+        to   { opacity: 1}
+      }
+
+
+
+    </style>
+    <!-- image and register forms -->
+    <section class="Form mx-5 my-4" id="content">
+      <div class="container" id="login">
+        <div class="row no-gutters">
+          <div class="col-lg-5" id="leftimagediv">
+            <img src="{{url_for('static', filename='poster.png')}}" class="img-fluid" alt="someimage" id="image">          
+          </div>
+          <div class="col-lg-7 px-5 pt-5">
+            <h1 class="font-weight-bold py-3">FilmFlick</h1>
+            <h2>Log in</h2>
+            <br>
+            <form class="form-signin" method="POST" action=" ">
+              {{ form.hidden_tag() }}
+              <!-- username input field -->
+              <div class="form-row">
+                <div class="col-lg-7">
+            <fieldset class="form-group">
+                  {{ form.username.label }}
+                  {% if form.username.errors %}
+                      {{ form.username(class="input-field")}}
+                      <div class="invalid-feedback">
+                       {% for error in form.username.errors %}
+                        <span>{{ error }} </span>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      {{ form.username }}
+                    {% endif %}
+                </div>
+              </div>
+              <!-- password input field -->
+              <div class="form-row">
+                <div class="col-lg-7">
+               <div class="input-field">
+                      {{ form.password.label}}
+                      {% if form.password.errors %}
+                          {{ form.password }}
+                          <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span> {{ error}} </span>
+                            {% endfor %}
+                          </div>
+                          {% else %}
+                            {{ form.password}}
+                            {% endif %}
+
+                </div>
+                <!-- remember password checkbox -->
+             <div class="check-box">
+                      {{ form.remember }}
+                      {{ form.remember.label}}
+                  </div>
+             </fieldset>
+             <!-- login button -->
+                <div >
+                    {{ form.submit_login (class="submit-btn mt-3 mb-5")}}
+              </div>
+              <div class="form-row">
+                <div class="col-lg-7">
+                   <p style="color: black">Don't have an account? <a href="{{ url_for('usersReviews.register')}}">Register here</a></p>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-lg-7" id="fgtpassword">
+                   <a href="{{ url_for('usersReviews.forgot_password')}}">Forgot your password?</a>
+                </div>
+              </div>
+            </form>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+{% endblock content %}

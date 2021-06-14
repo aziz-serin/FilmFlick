@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+<style>
+	html {
+    height: 100%;
+	}
+	body {
+  	min-height: 100%;
+		background-image: url("../static/background2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
+	}
+	#searchPage {
+		margin-top: 20px;
+		margin-bottom: 40px;
+		background: rgba(255,255,255,0.65);
+		background-position: center;
+		width: 75%;
+		height: 80%;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		animation: fadein 1.5s;
+
+	}
+	.card {
+		background: white;
+		height:445px;
+		width: 95%;
+		margin-top: 20px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		display: block;
+	}
+	#poster{
+		margin-left: 10px;
+		margin-top: 20px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+		height:380px;
+		width: 90%;
+	}
+	@keyframes fadein {
+	  from { opacity: 0}
+	  to   { opacity: 1}
+	}
+	.movie-title{
+		margin: 0;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    width: 100%;
+	    white-space: nowrap;
+	    padding-left: 5%;
+	    padding-right: 5%;
+	}
+	a:hover {
+    	color: #6ABCEA;
+  	}
+
+</style>
+
+<!-- search bar -->
+<div class="container-fluid p-3">
+	<form action="/searchMovies/" method="POST" id="searchForm">
+		<div class="input-group col-md-9 mx-md-auto pt-3">
+				<input class="form-control py-2 border-right-0 border" name="search" value="{{ search_result }}" type="search" placeholder="Search..." id="searchMovies">
+				<span class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+		</div>
+	</form>
+</div>
+
+<!-- List of popular movies and their top reviews -->
+<div class="container-fluid p-3" id="searchPage">
+	{% if not error_message %}
+		<div class="row" id="popularReviews">
+		{% for i in range(0,4) %}
+			{% if not IDs[i] %}
+
+			{% else %}
+				<div class="col-md-3 no-gutters" id="popularMoviePosters">
+					<div class="card mx-auto">
+						<div class="well text-center">
+							<img src={{posters[i]}} id="poster">
+								<a href="/detailedReview/ID={{IDs[i]}}">
+									<h5 class="movie-title">{{ titles[i] }} ({{ years[i] }})</h5>
+								</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<div class="row" id="popularReviews">
+		{% for i in range(4,8) %}
+			{% if not IDs[i] %}
+
+			{% else %}
+				<div class="col-md-3 no-gutters" id="popularMoviePosters">
+					<div class="card mx-auto">
+						<div class="well text-center">
+							<img src={{posters[i]}} id="poster">
+								<a href="/detailedReview/ID={{IDs[i]}}">
+									<h5 class="movie-title">{{ titles[i] }} ({{ years[i] }})</h5>
+								</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<div class="row" id="popularReviews">
+		{% for i in range(8,12) %}
+			{% if not IDs[i] %}
+
+			{% else %}
+				<div class="col-md-3 no-gutters" id="popularMoviePosters">
+					<div class="card mx-auto">
+						<div class="well text-center">
+							<img src={{posters[i]}} id="poster">
+								<a href="/detailedReview/ID={{IDs[i]}}">
+									<h5 class="movie-title">{{ titles[i] }} ({{ years[i] }})</h5>
+								</a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<div class="row" id="popularReviews">
+		{% for i in range(12,16) %}
+			{% if not IDs[i] %}
+
+			{% else %}
+				<div class="col-md-3 no-gutters" id="popularMoviePosters">
+					<div class="card mx-auto">
+						<div class="well text-center">
+							<img src={{posters[i]}} id="poster">
+								<a href="/detailedReview/ID={{IDs[i]}}"><h5 class="movie-title">{{ titles[i] }} ({{ years[i] }})</h5></a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<div class="row" id="popularReviews">
+		{% for i in range(16,20) %}
+			{% if not IDs[i] %}
+
+			{% else %}
+				<div class="col-md-3 no-gutters" id="popularMoviePosters">
+					<div class="card mx-auto">
+						<div class="well text-center">
+							<img src={{posters[i]}} id="poster">
+								<span><a href="/detailedReview/ID={{IDs[i]}}"><h5 class="movie-title">{{ titles[i] }} ({{ years[i] }})</h5></a></span>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		<br>
+	  	{% if not emptySearchBox and number_of_received_movies == 20 %}
+			<nav aria-label="Pagination">
+			  <ul class="pagination pagination-lg justify-content-center">
+			  	{% if page == 1 %}
+			  		<li class="page-item disabled"><a class="page-link" href="/searchMovies/page={{(page-1)|string}}">Previous</a></li>
+				{% else %}
+			  		<li class="page-item"><a class="page-link" href="/searchMovies/page={{(page-1)|string}}">Previous</a></li>
+			  	{% endif%}
+		 		<li class="page-item"><a class="page-link" href="/searchMovies/page={{(page+1)|string}}">Next</a></li>
+			  </ul>
+			</nav>
+		{% endif %}
+	{% else %}
+    	<h3>{{ error_message }}</h3>
+		<br>
+		{% if not emptySearchBox and page != 1 %}
+			<nav aria-label="Pagination">
+			  <ul class="pagination pagination-lg justify-content-center">
+				<li class="page-item"><a class="page-link" href="/searchMovies/page={{(1)|string}}">1</a></li>
+			  </ul>
+			</nav>
+		{% endif %}
+	{% endif %}
+
+</div>
+{% endblock content %}
